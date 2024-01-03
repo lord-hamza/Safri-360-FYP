@@ -1,0 +1,37 @@
+{
+    "expo": {
+        "name": "Safri360",
+        "slug": "safri-360",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "plugins": ["expo-image-picker"],
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "permissions": ["ACCESS_FINE_LOCATION", "READ_EXTERNAL_STORAGE", "CALL_PHONE"],
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.gulraizzz.safri360"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "15c72444-e07f-4318-8dc4-beb5b05f0127"
+            }
+        },
+        "owner": "gulraizzz"
+    }
+}
