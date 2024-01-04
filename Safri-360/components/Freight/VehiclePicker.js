@@ -29,7 +29,7 @@ const VehiclePicker = ({ selectedVehicle }) => {
                 placeholder="Select vehicle"
                 value={selected}
                 onChange={(item) => {
-                    dispatch(setFreight({ vehicle: item.value }));
+                    dispatch(setFreight({ vehicle: item.label }));
                     setSelected(item.value);
                 }}
                 itemTextStyle={styles.itemTextStyle}

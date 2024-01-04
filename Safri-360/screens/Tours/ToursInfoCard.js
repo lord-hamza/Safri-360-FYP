@@ -152,7 +152,7 @@ const ToursInfoCard = ({ navigation }) => {
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#000" />
+                <ActivityIndicator size="large" color="#A7E92F" />
                 <Text style={styles.loaderText}>Booking Tour...</Text>
             </View>
         );

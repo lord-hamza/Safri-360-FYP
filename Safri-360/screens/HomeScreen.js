@@ -29,7 +29,7 @@ import {
 } from "../store/slices/navigationSlice";
 import { selectRide, resetRide } from "../store/slices/rideSlice";
 import { selectTour, resetTour } from "../store/slices/tourSlice";
-import { resetFreight } from "../store/slices/freightSlice";
+import { selectFreight, resetFreight } from "../store/slices/freightSlice";
 import { useMapContext } from "../contexts/MapContext";
 import { moveCameraToCenter } from "../utils/moveCameraToCenter";
 import { extractCoordinates } from "../utils/extractCoordinates";
@@ -49,6 +49,7 @@ const HomeScreen = ({ navigation }) => {
     const currentUserLocation = useSelector(selectCurrentUserLocation);
     const travelRouteInformation = useSelector(selectTravelRouteInformation);
     const ride = useSelector(selectRide);
+    const freight = useSelector(selectFreight);
     const tour = useSelector(selectTour);
 
     const { width, height } = Dimensions.get("window");
@@ -62,11 +63,14 @@ const HomeScreen = ({ navigation }) => {
                 ? "85%"
                 : tour.isBooked
                 ? "50%"
-                : ride.status === "fetching" || ride.status === "completed"
+                : ride.status === "fetching" ||
+                  ride.status === "completed" ||
+                  freight.status === "fetching" ||
+                  freight.status === "completed"
                 ? "30%"
                 : "57%",
         ];
-    }, [keyboardOpen, tour.isBooked, ride.status]);
+    }, [keyboardOpen, tour.isBooked, ride.status, freight.status]);
 
     const animationConfigs = useBottomSheetSpringConfigs({
         damping: 80,
@@ -214,12 +218,12 @@ const HomeScreen = ({ navigation }) => {
         dispatch(resetTour());
     };
 
-    const handleRideBackPress = () => {
-        const rideRef = ref(dbRealtime, "Rides/" + ride.id);
-        remove(rideRef)
+    const handleBackPressCommon = (dbRefPath, resetAction) => {
+        const refPath = ref(dbRealtime, dbRefPath);
+        remove(refPath)
             .then(() => {
                 setShowDirection(false);
-                dispatch(resetRide());
+                dispatch(resetAction());
                 dispatch(setOrigin(null));
                 dispatch(setDestination(null));
                 dispatch(setTravelRouteInformation(null));
@@ -228,6 +232,18 @@ const HomeScreen = ({ navigation }) => {
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    const handleRideBackPress = () => {
+        handleBackPressCommon("Rides/" + ride.id, resetRide);
+    };
+
+    const handleFreightBackPress = () => {
+        handleBackPressCommon("FreightRequests/" + freight.id, resetFreight);
+    };
+
+    const openDrawerMenu = () => {
+        navigation.openDrawer();
     };
 
     return (
@@ -240,12 +256,22 @@ const HomeScreen = ({ navigation }) => {
                     </>
                 ) : ride.status === "fetching" || showDirection ? (
                     <DrawerMenuButton icon="arrow-back-outline" action={handleRideBackPress} />
+                ) : freight.status === "fetching" || showDirection ? (
+                    <DrawerMenuButton icon="arrow-back-outline" action={handleFreightBackPress} />
                 ) : (
-                    <DrawerMenuButton icon="menu" action={() => navigation.openDrawer()} />
+                    <DrawerMenuButton icon="menu" action={openDrawerMenu} />
                 )}
-                <View style={ride.status === "fetching" ? { height: "85%" } : { height: "55%" }}>
+
+                <View
+                    style={
+                        ride.status === "fetching" || freight.status === "fetching"
+                            ? { height: "85%" }
+                            : { height: "55%" }
+                    }
+                >
                     <Map initialPosition={initialPosition} />
                 </View>
+
                 <BottomSheet
                     ref={BottomSheetRef}
                     snapPoints={snapPoints}
@@ -272,6 +298,20 @@ const HomeScreen = ({ navigation }) => {
                     ) : ride.status === "completed" ? (
                         <View style={styles.modeButtons}>
                             <Text style={styles.rideBookingText}>You have reached your destination!</Text>
+                        </View>
+                    ) : freight.status === "fetching" ? (
+                        <></>
+                    ) : freight.status === "accepted" && showDirection ? (
+                        <View style={styles.modeButtons}>
+                            <Text style={styles.rideBookingText}>Your Request has been Accepted!</Text>
+                        </View>
+                    ) : freight.status === "ongoing" && showDirection ? (
+                        <View style={styles.modeButtons}>
+                            <Text style={styles.rideBookingText}>Your Request is Ongoing!</Text>
+                        </View>
+                    ) : freight.status === "completed" ? (
+                        <View style={styles.modeButtons}>
+                            <Text style={styles.rideBookingText}>Your Freight has been delivered!</Text>
                         </View>
                     ) : (
                         <View style={styles.modeButtons}>

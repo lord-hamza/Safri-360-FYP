@@ -28,13 +28,14 @@ const RideRequestCard = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const rideRef = ref(dbRealtime, "Rides/" + ride.rideID);
+        const rideRef = ref(dbRealtime, "Rides/" + ride.id);
         onValue(rideRef, (snapshot) => {
             const rideData = snapshot.val();
             if (rideData) {
+                // TODO: Double check this condition:
                 if (rideData.customerID === user.uid && rideData.status === "assigned") {
-                    const driverRef = ref(dbRealtime, "Drivers/" + ride.assignedDriverPIN);
-                    dispatch(setRide({ ...ride, status: "assigned" }));
+                    const driverRef = ref(dbRealtime, "Drivers/" + rideData.assignedDriverPIN);
+                    dispatch(setRide({ ...ride, status: "assigned", assignedDriverPIN: rideData.assignedDriverPIN }));
                     onValue(driverRef, (snapshot) => {
                         const driverData = snapshot.val();
                         if (driverData) {
@@ -61,7 +62,7 @@ const RideRequestCard = ({ navigation }) => {
     };
 
     const submitRating = () => {
-        const driverRef = ref(dbRealtime, "Drivers/" + ride.assignedDriverPIN);
+        const driverRef = ref(dbRealtime, "Drivers/" + assignedDriver.pinCode);
         const newRating = calculateNewRating(
             assignedDriver.ratings.rating,
             assignedDriver.ratings.totalRatings,
@@ -129,11 +130,7 @@ const RideRequestCard = ({ navigation }) => {
                     <View style={styles.infoContainer}>
                         <Ionicons name="car-outline" size={27} color="#333" style={styles.icon} />
                         <Text style={styles.infoText}>
-                            {ride.selectedCar.manufacturer +
-                                " - " +
-                                ride.selectedCar.model +
-                                " - " +
-                                ride.selectedCar.year}
+                            {ride.car.manufacturer + " - " + ride.car.model + " - " + ride.car.year}
                         </Text>
                     </View>
                 </View>
@@ -171,9 +168,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginHorizontal: 10,
         backgroundColor: "#fff",
-    },
-    container: {
-        padding: 20,
     },
     loadingContainer: {
         justifyContent: "center",

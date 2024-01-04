@@ -7,6 +7,7 @@ const initialState = {
         origin: null,
         destination: null,
         fare: 0,
+        assignedDriverPIN: null,
         distance: null,
         duration: null,
         status: null,

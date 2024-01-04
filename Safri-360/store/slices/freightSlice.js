@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     freight: {
         id: null,
+        riderID: null,
         origin: null,
         destination: null,
         customerID: null,

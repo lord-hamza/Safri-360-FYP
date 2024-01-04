@@ -2,6 +2,11 @@
     "name": "safri360",
     "version": "1.0.0",
     "description": "📱 Cross Platform Freight and Tour Booking App",
+    "author": {
+        "name": "Gulraiz Noor Bari",
+        "email": "gulraiznoorbari@gmail.com",
+        "url": "https://github.com/gulraiznoorbari"
+    },
     "keywords": [
         "expo",
         "react-native"

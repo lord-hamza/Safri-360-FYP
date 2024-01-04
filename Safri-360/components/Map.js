@@ -11,29 +11,42 @@ import { dbRealtime } from "../firebase/config";
 import { useMapContext } from "../contexts/MapContext";
 import { setTravelRouteInformation, selectOrigin, selectDestination } from "../store/slices/navigationSlice";
 import { selectRide } from "../store/slices/rideSlice";
+import { selectFreight } from "../store/slices/freightSlice";
 import { selectTour } from "../store/slices/tourSlice";
 
 const { width, height } = Dimensions.get("window");
 
 const Map = ({ initialPosition }) => {
     const [assignedDriver, setAssignedDriver] = useState(null);
+    const [assignedFreightRider, setAssignedFreightRider] = useState(null);
 
     const { mapRef, showDirection } = useMapContext();
     const dispatch = useDispatch();
     const origin = useSelector(selectOrigin);
     const destination = useSelector(selectDestination);
     const ride = useSelector(selectRide);
+    const freight = useSelector(selectFreight);
     const tour = useSelector(selectTour);
 
     useEffect(() => {
-        const driverRef = ref(dbRealtime, "Drivers/" + ride.assignedDriverPIN);
-        get(driverRef).then((snapshot) => {
-            const driverData = snapshot.val();
-            if (driverData) {
-                setAssignedDriver(driverData);
-            }
-        });
-    }, [ride.assignedDriverPIN]);
+        if (ride && (ride.status === "assigned" || ride.status === "ongoing")) {
+            const driverRef = ref(dbRealtime, "Drivers/" + ride.assignedDriverPIN);
+            get(driverRef).then((snapshot) => {
+                const driverData = snapshot.val();
+                if (driverData) {
+                    setAssignedDriver(driverData);
+                }
+            });
+        } else if (freight && (freight.status === "accepted" || freight.status === "ongoing")) {
+            const freightRiderRef = ref(dbRealtime, "FreightRiders/" + freight.riderID);
+            get(freightRiderRef).then((snapshot) => {
+                const freightRiderData = snapshot.val();
+                if (freightRiderData) {
+                    setAssignedFreightRider(freightRiderData);
+                }
+            });
+        }
+    }, [ride.assignedDriverPIN, freight.riderID]);
 
     const getRouteInfo = (args) => {
         if (args && (origin || destination)) {
@@ -60,7 +73,7 @@ const Map = ({ initialPosition }) => {
 
     return (
         <>
-            {ride.status === "fetching" && (
+            {(freight.status === "fetching" || ride.status === "fetching") && (
                 <>
                     <View style={styles.loadingContainer}></View>
                     <View style={styles.loadingContent}>
@@ -118,9 +131,11 @@ const Map = ({ initialPosition }) => {
                         />
                     </>
                 )}
-                {(ride || tour) && !tour.isBooked && origin && <Marker coordinate={origin} pinColor="#A7E92F" />}
-                {ride && destination && <Marker coordinate={destination} />}
-                {ride && origin && destination && showDirection && (
+                {(ride || freight || tour) && !tour.isBooked && origin && (
+                    <Marker coordinate={origin} pinColor="#A7E92F" />
+                )}
+                {(ride || freight) && destination && <Marker coordinate={destination} />}
+                {(ride || freight) && origin && destination && showDirection && (
                     <MapViewDirections
                         origin={origin}
                         destination={destination}
@@ -155,6 +170,40 @@ const Map = ({ initialPosition }) => {
                             origin={{
                                 latitude: assignedDriver?.location.latitude,
                                 longitude: assignedDriver?.location.longitude,
+                            }}
+                            destination={origin}
+                            apikey={GOOGLE_MAPS_API_KEY}
+                            mode="DRIVING"
+                            strokeColor="#000"
+                            strokeWidth={2}
+                            precision="high"
+                            optimizeWaypoints={true}
+                            onReady={getRouteInfo}
+                        />
+                    </>
+                )}
+                {freight && (freight.status === "accepted" || freight.status === "ongoing") && assignedFreightRider && (
+                    <>
+                        <Marker
+                            coordinate={{
+                                latitude: assignedFreightRider?.location.latitude,
+                                longitude: assignedFreightRider?.location.longitude,
+                            }}
+                        >
+                            <MaterialIcons
+                                name="directions-car"
+                                size={32}
+                                color="#000"
+                                style={{
+                                    borderRadius: 50,
+                                    backgroundColor: "#fff",
+                                }}
+                            />
+                        </Marker>
+                        <MapViewDirections
+                            origin={{
+                                latitude: assignedFreightRider?.location.latitude,
+                                longitude: assignedFreightRider?.location.longitude,
                             }}
                             destination={origin}
                             apikey={GOOGLE_MAPS_API_KEY}

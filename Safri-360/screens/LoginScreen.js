@@ -101,7 +101,7 @@ const LoginScreen = ({ navigation }) => {
                     <ActivityIndicator
                         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                         size="large"
-                        color="#000"
+                        color="#A7E92F"
                     />
                 )}
 

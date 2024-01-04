@@ -28,25 +28,25 @@ const FreightRequestCard = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const freightRiderRef = ref(dbRealtime, "Freight Riders/" + freight.id);
-        onValue(freightRiderRef, (snapshot) => {
-            const freightRiderData = snapshot.val();
-            if (freightRiderData) {
-                if (freightRiderData.customerID === user.uid && freightRiderData.status === "accepted") {
-                    const freightRiderRef = ref(dbRealtime, "Freight Riders/" + freight.id);
-                    dispatch(setFreight({ ...freight, status: "accepted" }));
+        const freightRideRef = ref(dbRealtime, "FreightRequests/" + freight.id);
+        onValue(freightRideRef, (snapshot) => {
+            const freightRideData = snapshot.val();
+            if (freightRideData) {
+                if (freightRideData.customerID === user.uid && freightRideData.status === "accepted") {
+                    const freightRiderRef = ref(dbRealtime, "Freight Riders/" + freightRideData.riderID);
+                    dispatch(setFreight({ ...freight, status: "accepted", riderID: freightRideData.riderID }));
                     onValue(freightRiderRef, (snapshot) => {
-                        const freightRiderData = snapshot.val();
-                        if (freightRiderData) {
-                            setFreightRider(freightRiderData);
+                        const freightRideData = snapshot.val();
+                        if (freightRideData) {
+                            setFreightRider(freightRideData);
                             setLoading(false);
                         }
                     });
-                } else if (freightRiderData.customerID === user.uid && freightRiderData.status === "ongoing") {
+                } else if (freightRideData.customerID === user.uid && freightRideData.status === "ongoing") {
                     dispatch(setFreight({ ...freight, status: "ongoing" }));
-                } else if (freightRiderData.customerID === user.uid && freightRiderData.status === "completed") {
+                } else if (freightRideData.customerID === user.uid && freightRideData.status === "completed") {
                     dispatch(setFreight({ ...freight, status: "completed" }));
-                } else if (freightRiderData.customerID === user.uid && freightRiderData.status === "cancelled") {
+                } else if (freightRideData.customerID === user.uid && freightRideData.status === "cancelled") {
                     dispatch(setFreight({ ...freight, status: "cancelled" }));
                 }
             }
@@ -61,7 +61,7 @@ const FreightRequestCard = ({ navigation }) => {
     };
 
     const submitRating = () => {
-        const driverRef = ref(dbRealtime, "Freight Riders/" + freight.id);
+        const driverRef = ref(dbRealtime, "Freight Riders/" + freight.riderID);
         const newRating = calculateNewRating(freightRider.ratings.rating, freightRider.ratings.totalRatings, rating);
         update(driverRef, {
             ratings: {
