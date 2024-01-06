@@ -1,6 +1,6 @@
 {
     "expo": {
-        "name": "Safri360-Driver",
+        "name": "Safri360 Driver",
         "slug": "safri-360-driver",
         "version": "1.0.0",
         "orientation": "portrait",
@@ -18,10 +18,12 @@
         "android": {
             "permissions": ["ACCESS_FINE_LOCATION", "READ_EXTERNAL_STORAGE", "CALL_PHONE"],
             "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
+                "foregroundImage": "./assets/icon.png",
                 "backgroundColor": "#ffffff"
             },
-            "package": "com.gulraizzz.safri360driver"
+            "icon": "./assets/icon.png",
+            "package": "com.gulraizzz.safri360driver",
+            "versionCode": 1
         },
         "web": {
             "favicon": "./assets/favicon.png"

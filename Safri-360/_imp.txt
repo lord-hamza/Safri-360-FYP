@@ -1,0 +1,6 @@
+Incase the redux-persist issue continues, you can follow these:
+
+https://github.com/rt2zz/redux-persist/issues/1430
+https://github.com/react-native-async-storage/async-storage/issues/537#issuecomment-781047700
+https://github.com/rt2zz/redux-persist/issues/1265
+

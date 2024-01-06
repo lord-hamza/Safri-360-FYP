@@ -27,6 +27,8 @@ import RidesHistoryScreen from "./screens/DrawerScreens/History/Rides/RidesHisto
 import RideHistoryDetailScreen from "./screens/DrawerScreens/History/Rides/RideHistoryDetailScreen";
 import ToursHistoryScreen from "./screens/DrawerScreens/History/Tours/ToursHistoryScreen";
 import TourHistoryDetailScreen from "./screens/DrawerScreens/History/Tours/TourHistoryDetailScreen";
+import FreightHistoryScreen from "./screens/DrawerScreens/History/Freights/FreightHistoryScreen";
+import FreightHistoryDetailScreen from "./screens/DrawerScreens/History/Freights/FreightHistoryDetailScreen";
 import DrawerNavigation from "./navigation/DrawerNavigation";
 
 const Stack = createStackNavigator();
@@ -85,8 +87,10 @@ const App = () => {
                                             <Stack.Screen name="ChangePhoneNumberScreen" component={ChangePhoneNumberScreen} />
                                             <Stack.Screen name="RidesHistoryScreen" component={RidesHistoryScreen} />
                                             <Stack.Screen name="ToursHistoryScreen" component={ToursHistoryScreen} />
+                                            <Stack.Screen name="FreightHistoryScreen" component={FreightHistoryScreen} />
                                             <Stack.Screen name="RideHistoryDetailScreen" component={RideHistoryDetailScreen} />
                                             <Stack.Screen name="TourHistoryDetailScreen" component={TourHistoryDetailScreen} />
+                                            <Stack.Screen name="FreightHistoryDetailScreen" component={FreightHistoryDetailScreen} />
                                         </Stack.Navigator>
                                     </SafeAreaProvider>
                                 </NavigationContainer>

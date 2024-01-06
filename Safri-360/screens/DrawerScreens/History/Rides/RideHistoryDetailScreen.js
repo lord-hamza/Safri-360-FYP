@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Linking } from "react-native";
 import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -23,6 +23,10 @@ const RideHistoryDetailScreen = ({ route, navigation }) => {
             },
         });
     }, [navigation]);
+
+    const linkToSupport = () => {
+        Linking.openURL("https://safritravels.com/contact/");
+    };
 
     return (
         <View style={styles.container}>
@@ -76,7 +80,7 @@ const RideHistoryDetailScreen = ({ route, navigation }) => {
                     title="Support"
                     buttonStyle={styles.button}
                     titleStyle={styles.buttonText}
-                    onPress={() => {}}
+                    onPress={linkToSupport}
                 />
             </View>
         </View>

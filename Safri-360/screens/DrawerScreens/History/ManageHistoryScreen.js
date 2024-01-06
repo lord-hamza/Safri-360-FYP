@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { CarIcon, TourVanIcon } from "../../../assets";
+import { CarIcon, TourVanIcon, TruckIcon } from "../../../assets";
 
 const ManageScreen = ({ navigation }) => {
     return (
@@ -11,6 +11,13 @@ const ManageScreen = ({ navigation }) => {
                 >
                     <Image source={CarIcon} style={styles.icon} />
                     <Text style={styles.cardText}>Rides</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.cardContainer}
+                    onPress={() => navigation.navigate("FreightHistoryScreen")}
+                >
+                    <Image source={TruckIcon} style={styles.icon} />
+                    <Text style={styles.cardText}>Freights</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardContainer}
