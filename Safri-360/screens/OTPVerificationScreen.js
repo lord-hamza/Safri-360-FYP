@@ -1,30 +1,30 @@
 import { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PhoneAuthProvider, linkWithCredential } from "firebase/auth";
+import { PhoneAuthProvider, linkWithCredential, onAuthStateChanged, getAuth } from "firebase/auth";
 import { ref, set, child } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 
-import { FirebaseRecaptchaVerifierModal } from "../components/firebase-recaptcha/modal";
-import { useFirebase } from "../contexts/FirebaseContext";
+import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
+import { useFirebase } from "@contexts/FirebaseContext";
 import firebaseConfig, { dbRealtime } from "../firebase/config";
-import { selectUser, setUser } from "../store/slices/userSlice";
-import { humanPhoneNumber } from "../utils/humanPhoneNumber";
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
+import { selectUser, setUser } from "@store/slices/userSlice";
+import { humanPhoneNumber } from "@utils/humanPhoneNumber";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import { showError } from "@utils/ErrorHandlers";
 
 const OTPVerificationScreen = ({ navigation }) => {
     const CODE_LENGTH = 6;
-    const { sendPhoneVerificationCode, currentUser, updateUserProfile } = useFirebase();
+    const { sendPhoneVerificationCode, updateUserProfile } = useFirebase();
     const dispatch = useDispatch();
     const user = useSelector(selectUser);
     const phoneNumber = user.phoneNumber;
 
+    const [currentUser, setCurrentUser] = useState(null);
     const [code, setCode] = useState([...Array(CODE_LENGTH)]);
     const [verificationId, setVerificationId] = useState();
     const [verificationSent, setVerificationSent] = useState(false);
-    const [messageColor, setMessageColor] = useState("red");
-    const [message, setMessage] = useState(null);
     const [isDisabled, setDisabled] = useState(true);
     const [textFocus, setTextFocus] = useState(false);
 
@@ -34,11 +34,33 @@ const OTPVerificationScreen = ({ navigation }) => {
 
     useEffect(() => {
         console.log("OTPVerificationScreen loaded");
-        if (!phoneNumber) return handleMessage("Something went wrong. Phone number was not found", "red");
+        if (!phoneNumber) {
+            showError("Something went wrong", "Phone number was not found.");
+            return;
+        }
         if (!verificationSent) {
             sendVerificationCode();
         }
+        onAuthStateChanged(getAuth(), (user) => {
+            setCurrentUser(user);
+        });
+        BackHandler.addEventListener("hardwareBackPress", restrictGoingBack);
+        return () => {
+            BackHandler.removeEventListener("hardwareBackPress", restrictGoingBack);
+        };
     }, []);
+
+    const restrictGoingBack = () => {
+        Alert.alert("Hold on!", "Are you sure you want to go back?", [
+            {
+                text: "Cancel",
+                onPress: () => null,
+                style: "cancel",
+            },
+            { text: "YES", onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+    };
 
     const addToRef = (element) => {
         if (element && !codeRefs.current.includes(element)) {
@@ -56,16 +78,6 @@ const OTPVerificationScreen = ({ navigation }) => {
             .catch((error) => {
                 console.log("Error adding phone number to DB: ", error);
             });
-    };
-
-    const handleMessage = (message, color = "red") => {
-        try {
-            message = typeof message === "string" ? message : message.join("\n");
-            setMessage(message);
-        } catch {
-            setMessage(`${message}`);
-        }
-        setMessageColor(color);
     };
 
     const handleInputCode = (value, index) => {
@@ -96,7 +108,7 @@ const OTPVerificationScreen = ({ navigation }) => {
         });
         const codeValidLength = parsedCode.length === CODE_LENGTH;
         if (!codeValidLength) {
-            handleMessage("Invalid verification code");
+            showError("Invalid code", "Code must be 6 digits long");
             return;
         }
         validateVerificationCode(parsedCode);
@@ -115,7 +127,7 @@ const OTPVerificationScreen = ({ navigation }) => {
                 navigation.navigate("HomeScreen");
             }, 100);
         } catch (error) {
-            handleMessage(`Error: ${error.message}`, "red");
+            showError("Validation Error", "Invalid code, Please try again.");
         }
     };
 
@@ -124,11 +136,15 @@ const OTPVerificationScreen = ({ navigation }) => {
         const onSuccess = (status) => setVerificationId(status);
         const onError = (error) => {
             if (error.message == "auth/invalid-verification-code") {
-                handleMessage("Invalid verification code", "red");
+                showError("Invalid code", "Please enter a valid code.");
+                return;
             } else if (error.message == "auth/code-expired") {
-                handleMessage("Verification code has expired", "red");
+                showError("Code expired", "Verification code has expired.");
+                return;
             } else {
-                handleMessage(`Error: ${error.message}`, "red");
+                showError("Something went wrong", "Please try again.");
+                // console.log(error);
+                return;
             }
         };
         sendPhoneVerificationCode(formattedNumber, recaptchaVerifier.current, onSuccess, onError);
@@ -166,8 +182,6 @@ const OTPVerificationScreen = ({ navigation }) => {
                     <Pressable onPress={() => navigation.goBack()} style={styles.linkTextContainer}>
                         <Text style={styles.linkText}>Resend OTP</Text>
                     </Pressable>
-
-                    <Text style={[{ color: messageColor }, message && styles.errorMessage]}>{message}</Text>
 
                     <PrimaryButton text="Verify" action={() => handleSubmit()} disabled={isDisabled} />
                 </View>

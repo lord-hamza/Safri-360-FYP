@@ -5,14 +5,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ref, set } from "firebase/database";
 import { useDispatch } from "react-redux";
 
-import { setUser, resetUser } from "../store/slices/userSlice";
-import { useFirebase } from "../contexts/FirebaseContext";
+import { setUser, resetUser } from "@store/slices/userSlice";
+import { useFirebase } from "@contexts/FirebaseContext";
 import { dbRealtime } from "../firebase/config";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
-import ClearableInput from "../components/ClearableInput";
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
-import TransparentButton from "../components/Buttons/TransparentButton";
-import { showError } from "../utils/ErrorHandlers";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import ClearableInput from "@components/ClearableInput";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import TransparentButton from "@components/Buttons/TransparentButton";
+import { showError } from "@utils/ErrorHandlers";
 
 const SignUpScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -98,37 +98,35 @@ const SignUpScreen = ({ navigation }) => {
             return;
         }
 
-        if (isValid) {
-            const onSuccess = (credential) => {
-                const user = credential.user;
-                AddUserToDB(user);
-                navigation.navigate("PhoneRegisterScreen");
-            };
-            const onError = (error) => {
-                if (error.code === "auth/email-already-in-use") {
-                    showError("Email already in use", "Please use a different email address.");
-                } else {
-                    showError("Something went wrong", "Please try again later.");
-                    console.log(error);
-                }
-            };
-            dispatch(
-                setUser({
-                    firstName: firstName,
-                    lastName: lastName,
-                    userName: firstName,
-                    email: email,
-                    photoURL: DEFAULT_PROFILE_IMAGE,
-                }),
-            );
-            updateUserProfile({
+        const onSuccess = (credential) => {
+            const user = credential.user;
+            AddUserToDB(user);
+            navigation.navigate("PhoneRegisterScreen");
+        };
+        const onError = (error) => {
+            if (error.code === "auth/email-already-in-use") {
+                showError("Email already in use", "Please use a different email address.");
+            } else {
+                showError("Something went wrong", "Please try again later.");
+                console.log(error);
+            }
+        };
+        dispatch(
+            setUser({
                 firstName: firstName,
                 lastName: lastName,
-                displayName: firstName,
+                userName: firstName,
+                email: email,
                 photoURL: DEFAULT_PROFILE_IMAGE,
-            });
-            signUp(email, password, onSuccess, onError);
-        }
+            }),
+        );
+        updateUserProfile({
+            firstName: firstName,
+            lastName: lastName,
+            displayName: firstName,
+            photoURL: DEFAULT_PROFILE_IMAGE,
+        });
+        signUp(email, password, onSuccess, onError);
     };
 
     return (

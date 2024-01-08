@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ref, remove } from "firebase/database";
 
 import { dbRealtime } from "../firebase/config";
-import { setCurrentUserLocation, selectCurrentUserLocation } from "../store/slices/locationSlice";
+import { setCurrentUserLocation, selectCurrentUserLocation } from "@store/slices/locationSlice";
 import {
     setOrigin,
     selectOrigin,
@@ -26,19 +26,19 @@ import {
     selectDestination,
     setTravelRouteInformation,
     selectTravelRouteInformation,
-} from "../store/slices/navigationSlice";
-import { selectRide, resetRide } from "../store/slices/rideSlice";
-import { selectTour, resetTour } from "../store/slices/tourSlice";
-import { selectFreight, resetFreight } from "../store/slices/freightSlice";
-import { useMapContext } from "../contexts/MapContext";
-import { moveCameraToCenter } from "../utils/moveCameraToCenter";
-import { extractCoordinates } from "../utils/extractCoordinates";
+} from "@store/slices/navigationSlice";
+import { selectRide, resetRide } from "@store/slices/rideSlice";
+import { selectTour, resetTour } from "@store/slices/tourSlice";
+import { selectFreight, resetFreight } from "@store/slices/freightSlice";
+import { useMapContext } from "@contexts/MapContext";
+import { moveCameraToCenter } from "@utils/moveCameraToCenter";
+import { extractCoordinates } from "@utils/extractCoordinates";
 import { appModes } from "../constants/AppModes";
-import Map from "../components/Map";
+import Map from "@components/Map";
 import BottomSheetNavigator from "../navigation/BottomSheetNavigator";
-import AppModeButton from "../components/Buttons/AppModeButton";
-import DrawerMenuButton from "../components/Buttons/DrawerMenuButton";
-import TimeCard from "../components/Tours/TimeCard";
+import AppModeButton from "@components/Buttons/AppModeButton";
+import DrawerMenuButton from "@components/Buttons/DrawerMenuButton";
+import TimeCard from "@components/Tours/TimeCard";
 
 const HomeScreen = ({ navigation }) => {
     const [selectedMode, setSelectedMode] = useState("Ride");

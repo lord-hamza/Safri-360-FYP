@@ -2,10 +2,10 @@ import { StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import HomeScreen from "../screens/HomeScreen";
-import ManageHistoryScreen from "../screens/DrawerScreens/History/ManageHistoryScreen";
-import SettingsScreen from "../screens/DrawerScreens/Settings/SettingsScreen";
-import SafetyScreen from "../screens/DrawerScreens/SafetyScreen";
+import HomeScreen from "@screens/HomeScreen";
+import ManageHistoryScreen from "@screens/DrawerScreens/History/ManageHistoryScreen";
+import SettingsScreen from "@screens/DrawerScreens/Settings/SettingsScreen";
+import SafetyScreen from "@screens/DrawerScreens/SafetyScreen";
 import CustomDrawer from "./CustomDrawer";
 
 const Drawer = createDrawerNavigator();

@@ -5,17 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { ref, get, update } from "firebase/database";
 import moment from "moment";
 
-import { useMapContext } from "../../contexts/MapContext";
+import { useMapContext } from "@contexts/MapContext";
 import { dbRealtime } from "../../firebase/config";
-import { selectUser } from "../../store/slices/userSlice";
-import { setOrigin, setDestination } from "../../store/slices/navigationSlice";
-import { moveCameraToCenter } from "../../utils/moveCameraToCenter";
-import { selectTour, setTour } from "../../store/slices/tourSlice";
-import PlacesAutocomplete from "../../components/PlacesAutocomplete";
-import DestinationPicker from "../../components/Tours/DestinationPicker";
-import FareDisplay from "../../components/Tours/FareDisplay";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import { showError } from "../../utils/ErrorHandlers";
+import { selectUser } from "@store/slices/userSlice";
+import { setOrigin, setDestination } from "@store/slices/navigationSlice";
+import { moveCameraToCenter } from "@utils/moveCameraToCenter";
+import { selectTour, setTour } from "@store/slices/tourSlice";
+import PlacesAutocomplete from "@components/PlacesAutocomplete";
+import DestinationPicker from "@components/Tours/DestinationPicker";
+import FareDisplay from "@components/Tours/FareDisplay";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import { showError } from "@utils/ErrorHandlers";
 
 const ToursInfoCard = ({ navigation }) => {
     const [numberOfPeople, setNumberOfPeople] = useState("");

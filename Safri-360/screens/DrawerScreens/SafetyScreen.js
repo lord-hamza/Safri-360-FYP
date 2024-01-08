@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Pressable, Linking } from "react-native";
 
-import { SafetyIcon, AmbulanceIcon, PoliceIcon } from "../../assets";
+import { SafetyIcon, AmbulanceIcon, PoliceIcon } from "@assets";
 
 const SafetyScreen = () => {
     const callAmbulance = () => {

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useDispatch } from "react-redux";
 
-import { setFreight } from "../../store/slices/freightSlice";
+import { setFreight } from "@store/slices/freightSlice";
 
 const VehiclePicker = ({ selectedVehicle }) => {
     const dispatch = useDispatch();

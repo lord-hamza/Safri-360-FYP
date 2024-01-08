@@ -15,10 +15,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { auth } from "../firebase/config";
-import { selectUserType, setUserType } from "../store/slices/userTypeSlice";
-import { setRentACarUser } from "../store/slices/rentACarSlice";
-import { setTourUser } from "../store/slices/tourSlice";
-import { setFreightRider } from "../store/slices/freightRiderSlice";
+import { selectUserType, setUserType } from "@store/slices/userTypeSlice";
+import { setRentACarUser } from "@store/slices/rentACarSlice";
+import { setTourUser } from "@store/slices/tourSlice";
+import { setFreightRider } from "@store/slices/freightRiderSlice";
 
 const FirebaseContext = createContext();
 
@@ -37,7 +37,7 @@ export function FirebaseProvider({ children }) {
             const unsubscribe = onAuthStateChanged(auth, (user) => {
                 setCurrentUser(user);
             });
-            return unsubscribe();
+            return () => unsubscribe();
         }
     }, [userType]);
 

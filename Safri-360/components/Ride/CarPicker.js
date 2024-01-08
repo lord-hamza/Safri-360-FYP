@@ -7,8 +7,8 @@ import { ref, onValue, get } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 import haversine from "haversine";
 
-import { selectCurrentUserLocation } from "../../store/slices/locationSlice";
-import { setRide, selectRide } from "../../store/slices/rideSlice";
+import { selectCurrentUserLocation } from "@store/slices/locationSlice";
+import { setRide, selectRide } from "@store/slices/rideSlice";
 
 const CarPicker = () => {
     const dispatch = useDispatch();

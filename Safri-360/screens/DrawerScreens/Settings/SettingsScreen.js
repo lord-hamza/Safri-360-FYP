@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { selectUser } from "../../../store/slices/userSlice";
-import { humanPhoneNumber } from "../../../utils/humanPhoneNumber";
-import MenuOptionButton from "../../../components/Buttons/MenuOptionButton";
+import { selectUser } from "@store/slices/userSlice";
+import { humanPhoneNumber } from "@utils/humanPhoneNumber";
+import MenuOptionButton from "@components/Buttons/MenuOptionButton";
 
 const SettingsScreen = () => {
     const user = useSelector(selectUser);

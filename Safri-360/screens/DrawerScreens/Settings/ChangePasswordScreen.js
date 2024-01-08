@@ -1,10 +1,10 @@
 import { useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { useFirebase } from "../../../contexts/FirebaseContext";
-import ClearableInput from "../../../components/ClearableInput";
-import PrimaryButton from "../../../components/Buttons/PrimaryButton";
-import { showError } from "../../../utils/ErrorHandlers";
+import { useFirebase } from "@contexts/FirebaseContext";
+import ClearableInput from "@components/ClearableInput";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import { showError } from "@utils/ErrorHandlers";
 
 const ChangePasswordScreen = ({ navigation }) => {
     const { updateUserPassword } = useFirebase();

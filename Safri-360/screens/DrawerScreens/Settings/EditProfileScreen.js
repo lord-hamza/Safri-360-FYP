@@ -8,12 +8,12 @@ import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useFirebase } from "../../../contexts/FirebaseContext";
+import { useFirebase } from "@contexts/FirebaseContext";
 import { storage, dbRealtime } from "../../../firebase/config";
-import { selectUser, setUser } from "../../../store/slices/userSlice";
-import KeyboardAvoidingWrapper from "../../../components/KeyboardAvoidingWrapper";
-import ClearableInput from "../../../components/ClearableInput";
-import { showError, showSuccess } from "../../../utils/ErrorHandlers";
+import { selectUser, setUser } from "@store/slices/userSlice";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import ClearableInput from "@components/ClearableInput";
+import { showError, showSuccess } from "@utils/ErrorHandlers";
 
 const EditProfileScreen = ({ navigation }) => {
     const user = useSelector(selectUser);

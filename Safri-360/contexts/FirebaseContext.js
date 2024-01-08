@@ -15,7 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 
 import { auth } from "../firebase/config";
-import { resetUser, setUser } from "../store/slices/userSlice";
+import { resetUser, setUser } from "@store/slices/userSlice";
 
 const FirebaseContext = createContext();
 
@@ -32,7 +32,7 @@ export function FirebaseProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
         });
-        return unsubscribe();
+        return () => unsubscribe();
     }, []);
 
     const signUp = (email, password, onSuccess, onError) => {

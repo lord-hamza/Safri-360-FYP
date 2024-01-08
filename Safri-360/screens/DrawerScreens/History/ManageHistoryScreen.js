@@ -1,32 +1,29 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { CarIcon, TourVanIcon, TruckIcon } from "../../../assets";
+import { CarIcon, TourVanIcon, TruckIcon } from "@assets";
 
 const ManageScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <View style={styles.content}>
+            <View style={styles.row}>
                 <TouchableOpacity
-                    style={styles.cardContainer}
+                    style={[styles.cardContainer, styles.cardContainerHalf]}
                     onPress={() => navigation.navigate("RidesHistoryScreen")}
                 >
                     <Image source={CarIcon} style={styles.icon} />
                     <Text style={styles.cardText}>Rides</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.cardContainer}
+                    style={[styles.cardContainer, styles.cardContainerHalf]}
                     onPress={() => navigation.navigate("FreightHistoryScreen")}
                 >
                     <Image source={TruckIcon} style={styles.icon} />
                     <Text style={styles.cardText}>Freights</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardContainer}
-                    onPress={() => navigation.navigate("ToursHistoryScreen")}
-                >
-                    <Image source={TourVanIcon} style={styles.icon} />
-                    <Text style={styles.cardText}>Tours</Text>
-                </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate("ToursHistoryScreen")}>
+                <Image source={TourVanIcon} style={styles.icon} />
+                <Text style={styles.cardText}>Tours</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -35,17 +32,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
+        flexDirection: "column",
     },
-    content: {
+    row: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "100%",
+        justifyContent: "space-evenly",
     },
     cardContainer: {
-        flex: 1,
         alignItems: "center",
-        margin: 15,
+        marginHorizontal: 15,
+        marginVertical: 12,
         padding: 20,
         backgroundColor: "#fff",
         borderRadius: 10,
@@ -59,6 +55,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        maxWidth: "42%",
+    },
+    cardContainerHalf: {
+        flex: 0.5,
     },
     icon: {
         width: 50,

@@ -6,13 +6,13 @@ import { ref, get } from "firebase/database";
 import { useDispatch } from "react-redux";
 
 import { dbRealtime } from "../firebase/config";
-import { setUser } from "../store/slices/userSlice";
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
-import { useFirebase } from "../contexts/FirebaseContext";
-import ClearableInput from "../components/ClearableInput";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
-import TransparentButton from "../components/Buttons/TransparentButton";
-import { showError } from "../utils/ErrorHandlers";
+import { setUser } from "@store/slices/userSlice";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import { useFirebase } from "@contexts/FirebaseContext";
+import ClearableInput from "@components/ClearableInput";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import TransparentButton from "@components/Buttons/TransparentButton";
+import { showError } from "@utils/ErrorHandlers";
 
 const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);

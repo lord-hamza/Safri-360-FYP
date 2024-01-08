@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectOrigin } from "../../store/slices/navigationSlice";
-import { selectTour } from "../../store/slices/tourSlice";
+import { selectOrigin } from "@store/slices/navigationSlice";
+import { selectTour } from "@store/slices/tourSlice";
 
 const FareDisplay = ({ numberOfPeople }) => {
     const origin = useSelector(selectOrigin);

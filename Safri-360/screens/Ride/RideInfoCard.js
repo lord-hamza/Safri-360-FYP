@@ -6,22 +6,22 @@ import { ref, push, set, onValue } from "firebase/database";
 import { Skeleton } from "@rneui/themed";
 import moment from "moment";
 
-import { selectUser } from "../../store/slices/userSlice";
+import { selectUser } from "@store/slices/userSlice";
 import {
     selectOrigin,
     selectDestination,
     setOrigin,
     setDestination,
     selectTravelRouteInformation,
-} from "../../store/slices/navigationSlice";
-import { selectRide, setRide } from "../../store/slices/rideSlice";
+} from "@store/slices/navigationSlice";
+import { selectRide, setRide } from "@store/slices/rideSlice";
 import { dbRealtime } from "../../firebase/config";
-import { useMapContext } from "../../contexts/MapContext";
-import { moveCameraToCenter } from "../../utils/moveCameraToCenter";
-import PlacesAutocomplete from "../../components/PlacesAutocomplete";
-import CarPicker from "../../components/Ride/CarPicker";
-import FareCalculator from "../../components/Ride/FareCalculator";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import { useMapContext } from "@contexts/MapContext";
+import { moveCameraToCenter } from "@utils/moveCameraToCenter";
+import PlacesAutocomplete from "@components/PlacesAutocomplete";
+import CarPicker from "@components/Ride/CarPicker";
+import FareCalculator from "@components/Ride/FareCalculator";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
 
 const RideInfoCard = ({ navigation }) => {
     const { mapRef, setShowDirection, keyboardOpen } = useMapContext();

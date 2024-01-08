@@ -7,8 +7,8 @@ import { ref, onValue } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 import haversine from "haversine";
 
-import { setTour } from "../../store/slices/tourSlice";
-import { selectCurrentUserLocation } from "../../store/slices/locationSlice";
+import { setTour } from "@store/slices/tourSlice";
+import { selectCurrentUserLocation } from "@store/slices/locationSlice";
 
 const DestinationPicker = () => {
     const [selectedDestination, setSelectedDestination] = useState(null);

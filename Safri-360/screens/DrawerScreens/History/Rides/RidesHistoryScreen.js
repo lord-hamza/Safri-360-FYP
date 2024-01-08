@@ -4,7 +4,7 @@ import { ref, onValue } from "firebase/database";
 import { useSelector } from "react-redux";
 
 import { dbRealtime } from "../../../../firebase/config";
-import { selectUser } from "../../../../store/slices/userSlice";
+import { selectUser } from "@store/slices/userSlice";
 import RideHistoryCard from "./RideHistoryCard";
 
 const RidesHistoryScreen = ({ navigation }) => {

@@ -4,8 +4,8 @@ import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import KeyboardAvoidingWrapper from "../../../../components/KeyboardAvoidingWrapper";
-import { humanPhoneNumber } from "../../../../utils/humanPhoneNumber";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import { humanPhoneNumber } from "@utils/humanPhoneNumber";
 
 const TourHistoryDetailScreen = ({ route, navigation }) => {
     const { data } = route.params;

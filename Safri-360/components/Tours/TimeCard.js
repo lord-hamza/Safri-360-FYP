@@ -3,7 +3,7 @@ import { Card } from "react-native-elements";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
-import { selectTour } from "../../store/slices/tourSlice";
+import { selectTour } from "@store/slices/tourSlice";
 
 const TimeCard = () => {
     const tour = useSelector(selectTour);

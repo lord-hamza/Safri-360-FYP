@@ -6,14 +6,14 @@ import { Dropdown } from "react-native-element-dropdown";
 const countryCodes = require("country-codes-list");
 import { useSelector, useDispatch } from "react-redux";
 
-import { setRentACarUser } from "../store/slices/rentACarSlice";
-import { setTourUser } from "../store/slices/tourSlice";
-import { setFreightRider } from "../store/slices/freightRiderSlice";
-import { selectUserType } from "../store/slices/userTypeSlice";
-import InputField from "../components/InputField";
-import PrimaryButton from "../components/Buttons/PrimaryButton";
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
-import { showError } from "../utils/ErrorHandlers";
+import { setRentACarUser } from "@store/slices/rentACarSlice";
+import { setTourUser } from "@store/slices/tourSlice";
+import { setFreightRider } from "@store/slices/freightRiderSlice";
+import { selectUserType } from "@store/slices/userTypeSlice";
+import InputField from "@components/InputField";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import KeyboardAvoidingWrapper from "@components/KeyboardAvoidingWrapper";
+import { showError } from "@utils/ErrorHandlers";
 
 const PhoneRegisterScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -43,13 +43,14 @@ const PhoneRegisterScreen = ({ navigation }) => {
     const validateNumber = () => {
         const phoneNumber = (value || "").replace(/[^\d/]/g, "");
         if (phoneNumber.length < 10) {
-            showError("Invalid Phone Number", "Please enter a valid phone number.");
             return false;
         }
+        return true;
     };
 
     const handleSubmit = () => {
         if (!validateNumber()) {
+            showError("Invalid Phone Number", "Please enter a valid phone number.");
             return;
         }
         const fullNumber = "+" + (countryCode?.countryCallingCode || 1) + (value || "").replace(/[^\d/]/g, "");

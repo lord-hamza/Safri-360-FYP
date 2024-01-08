@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import LottieView from "lottie-react-native";
 import { useSelector } from "react-redux";
 
-import { selectTour } from "../../store/slices/tourSlice";
+import { selectTour } from "@store/slices/tourSlice";
 
 const TourBookedScreen = ({ route, navigation }) => {
     const { bookingID } = route.params;
@@ -19,7 +19,7 @@ const TourBookedScreen = ({ route, navigation }) => {
         <View>
             <View style={styles.container}>
                 <LottieView
-                    source={require("../../assets/animations/check-animation.json")}
+                    source={require("@assets/animations/check-animation.json")}
                     autoPlay={true}
                     loop={false}
                     style={styles.lottie}

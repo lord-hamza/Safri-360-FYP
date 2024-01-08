@@ -1,4 +1,4 @@
-import { CarIcon, TourVanIcon, TruckIcon } from "../assets";
+import { CarIcon, TourVanIcon, TruckIcon } from "@assets";
 export const appModes = [
     {
         mode: "Ride",

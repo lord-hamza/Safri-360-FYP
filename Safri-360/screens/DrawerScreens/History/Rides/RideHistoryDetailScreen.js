@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Linking } from "react-native";
 import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { LicensePlateIcon } from "../../../../assets";
+import { LicensePlateIcon } from "@assets";
 
 const RideHistoryDetailScreen = ({ route, navigation }) => {
     const { data } = route.params;

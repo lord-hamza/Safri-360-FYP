@@ -9,12 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { AirbnbRating } from "react-native-ratings";
 import Modal from "react-native-modal";
 
-import { humanPhoneNumber } from "../../utils/humanPhoneNumber";
-import { selectRide, setRide } from "../../store/slices/rideSlice";
-import { selectUser } from "../../store/slices/userSlice";
+import { humanPhoneNumber } from "@utils/humanPhoneNumber";
+import { selectRide, setRide } from "@store/slices/rideSlice";
+import { selectUser } from "@store/slices/userSlice";
 import { dbRealtime } from "../../firebase/config";
-import { useMapContext } from "../../contexts/MapContext";
-import DisplayStarRatings from "../../components/Ride/DisplayStarRatings";
+import { useMapContext } from "@contexts/MapContext";
+import DisplayStarRatings from "@components/Ride/DisplayStarRatings";
 
 const RideRequestCard = ({ navigation }) => {
     const [loading, setLoading] = useState(true);

@@ -5,8 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
-import { selectUser } from "../store/slices/userSlice";
-import { useFirebase } from "../contexts/FirebaseContext";
+import { selectUser } from "@store/slices/userSlice";
+import { useFirebase } from "@contexts/FirebaseContext";
 
 const CustomDrawer = (props) => {
     const user = useSelector(selectUser);

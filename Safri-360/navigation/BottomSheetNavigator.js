@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import RideInfoCard from "../screens/Ride/RideInfoCard";
-import RideRequestCard from "../screens/Ride/RideRequestCard";
-import ToursInfoCard from "../screens/Tours/ToursInfoCard";
-import TourBookedScreen from "../screens/Tours/TourBookedScreen";
-import FreightInfoCard from "../screens/Freight/FreightInfoCard";
-import FreightRequestCard from "../screens/Freight/FreightRequestCard";
+import RideInfoCard from "@screens/Ride/RideInfoCard";
+import RideRequestCard from "@screens/Ride/RideRequestCard";
+import ToursInfoCard from "@screens/Tours/ToursInfoCard";
+import TourBookedScreen from "@screens/Tours/TourBookedScreen";
+import FreightInfoCard from "@screens/Freight/FreightInfoCard";
+import FreightRequestCard from "@screens/Freight/FreightRequestCard";
 
 const Stack = createNativeStackNavigator();
 

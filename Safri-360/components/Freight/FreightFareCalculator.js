@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectOrigin, selectDestination, selectTravelRouteInformation } from "../../store/slices/navigationSlice";
-import { selectFreight, setFreight } from "../../store/slices/freightSlice";
+import { selectOrigin, selectDestination, selectTravelRouteInformation } from "@store/slices/navigationSlice";
+import { selectFreight, setFreight } from "@store/slices/freightSlice";
 
 const FreightFareCalculator = ({ weight }) => {
     const PETROL_PRICE = 285;

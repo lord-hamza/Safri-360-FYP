@@ -6,16 +6,16 @@ import { ref, update, push, onValue } from "firebase/database";
 import moment from "moment";
 
 import { dbRealtime } from "../../firebase/config";
-import { showError } from "../../utils/ErrorHandlers";
-import { useMapContext } from "../../contexts/MapContext";
-import { selectUser } from "../../store/slices/userSlice";
-import { selectOrigin, setOrigin, selectDestination, setDestination } from "../../store/slices/navigationSlice";
-import { selectFreight, setFreight } from "../../store/slices/freightSlice";
-import { moveCameraToCenter } from "../../utils/moveCameraToCenter";
-import PlacesAutocomplete from "../../components/PlacesAutocomplete";
-import VehiclePicker from "../../components/Freight/VehiclePicker";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import FreightFareCalculator from "../../components/Freight/FreightFareCalculator";
+import { showError } from "@utils/ErrorHandlers";
+import { useMapContext } from "@contexts/MapContext";
+import { selectUser } from "@store/slices/userSlice";
+import { selectOrigin, setOrigin, selectDestination, setDestination } from "@store/slices/navigationSlice";
+import { selectFreight, setFreight } from "@store/slices/freightSlice";
+import { moveCameraToCenter } from "@utils/moveCameraToCenter";
+import PlacesAutocomplete from "@components/PlacesAutocomplete";
+import VehiclePicker from "@components/Freight/VehiclePicker";
+import PrimaryButton from "@components/Buttons/PrimaryButton";
+import FreightFareCalculator from "@components/Freight/FreightFareCalculator";
 
 const FreightInfoCard = ({ navigation }) => {
     const [weight, setWeight] = useState("");

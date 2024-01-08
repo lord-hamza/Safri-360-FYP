@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { ref, get } from "firebase/database";
 
 import { dbRealtime } from "../firebase/config";
-import { useMapContext } from "../contexts/MapContext";
-import { setTravelRouteInformation, selectOrigin, selectDestination } from "../store/slices/navigationSlice";
-import { selectRide } from "../store/slices/rideSlice";
-import { selectFreight } from "../store/slices/freightSlice";
-import { selectTour } from "../store/slices/tourSlice";
+import { useMapContext } from "@contexts/MapContext";
+import { setTravelRouteInformation, selectOrigin, selectDestination } from "@store/slices/navigationSlice";
+import { selectRide } from "@store/slices/rideSlice";
+import { selectFreight } from "@store/slices/freightSlice";
+import { selectTour } from "@store/slices/tourSlice";
 
 const { width, height } = Dimensions.get("window");
 
