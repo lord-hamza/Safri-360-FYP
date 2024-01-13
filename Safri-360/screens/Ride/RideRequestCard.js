@@ -15,11 +15,12 @@ import { selectUser } from "@store/slices/userSlice";
 import { dbRealtime } from "../../firebase/config";
 import { useMapContext } from "@contexts/MapContext";
 import DisplayStarRatings from "@components/Ride/DisplayStarRatings";
+import { resetRide } from "@store/slices/rideSlice";
+import { setOrigin, setDestination, setTravelRouteInformation } from "@store/slices/navigationSlice";
 
-const RideRequestCard = ({ navigation }) => {
+const RideRequestCard = () => {
     const [loading, setLoading] = useState(true);
     const [assignedDriver, setAssignedDriver] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
     const [rating, setRating] = useState(0);
 
     const { showDirection } = useMapContext();
@@ -32,7 +33,6 @@ const RideRequestCard = ({ navigation }) => {
         onValue(rideRef, (snapshot) => {
             const rideData = snapshot.val();
             if (rideData) {
-                // TODO: Double check this condition:
                 if (rideData.customerID === user.uid && rideData.status === "assigned") {
                     const driverRef = ref(dbRealtime, "Drivers/" + rideData.assignedDriverPIN);
                     dispatch(setRide({ ...ride, status: "assigned", assignedDriverPIN: rideData.assignedDriverPIN }));
@@ -75,8 +75,10 @@ const RideRequestCard = ({ navigation }) => {
             },
         })
             .then(() => {
-                navigation.navigate("Home");
-                setModalVisible(false);
+                dispatch(resetRide());
+                dispatch(setOrigin(null));
+                dispatch(setDestination(null));
+                dispatch(setTravelRouteInformation(null));
             })
             .catch((error) => {
                 console.log(error);

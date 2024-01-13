@@ -1,3 +1,4 @@
+import { DEFAULT_PROFILE_IMAGE } from "@env";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, FlatList, Linking, Dimensions, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -21,25 +22,30 @@ const AvailableRequestsCards = () => {
     useEffect(() => {
         const requestsRef = ref(dbRealtime, "FreightRequests/");
         onValue(requestsRef, (snapshot) => {
-            if (!snapshot.exists()) return;
-            const requestsData = snapshot.val();
-            const matchingRequests = [];
-            const userInfo = {};
-            for (const requestID in requestsData) {
-                const request = requestsData[requestID];
-                if (request.vehicle === freightRider.vehicleInfo.vehicleType) {
-                    if (request.status === "fetching") {
-                        const userRef = ref(dbRealtime, "Users/" + request.customerID);
-                        onValue(userRef, (snapshot) => {
-                            const userData = snapshot.val();
-                            userInfo[request.customerID] = userData;
-                            setUsersData(userInfo);
+            if (snapshot.exists()) {
+                const requestsData = snapshot.val();
+                const matchingRequests = [];
+                const userInfo = {};
+                for (const requestID in requestsData) {
+                    const request = requestsData[requestID];
+                    if (request.vehicle === freightRider.vehicleInfo.vehicleType) {
+                        if (request.status === "fetching") {
+                            const userRef = ref(dbRealtime, "Users/" + request.customerID);
+                            onValue(userRef, (snapshot) => {
+                                if (snapshot.exists()) {
+                                    const userData = snapshot.val();
+                                    userInfo[request.customerID] = userData;
+                                    setUsersData(userInfo);
+                                }
+                            });
                             matchingRequests.push(request);
-                        });
+                        }
                     }
                 }
+                setAvailableRequests(matchingRequests);
+            } else {
+                setAvailableRequests([]);
             }
-            setAvailableRequests(matchingRequests);
         });
     }, []);
 
@@ -51,7 +57,7 @@ const AvailableRequestsCards = () => {
         const requestRef = ref(dbRealtime, "FreightRequests/" + requestID);
         update(requestRef, {
             status: "accepted",
-            carRegistraionNumber: freightRider.vehicleInfo.carRegistraionNumber,
+            carRegistraionNumber: freightRider.vehicleInfo.carRegistrationNumber,
         })
             .then(() => {
                 dispatch(setFreightRider({ rideAssigned: true }));
@@ -74,9 +80,9 @@ const AvailableRequestsCards = () => {
         return (
             <Card key={index} containerStyle={styles.cardContainer}>
                 <View style={styles.userContainer}>
-                    <Image source={{ uri: user.photoURL }} style={styles.userImage} />
+                    <Image source={{ uri: user.photoURL || DEFAULT_PROFILE_IMAGE }} style={styles.userImage} />
                     <View style={styles.userDetails}>
-                        <Text style={styles.userName}>{user.name}</Text>
+                        <Text style={styles.userName}>{user.firstName}</Text>
                         <Text style={styles.userPhone}>{humanPhoneNumber(user.phoneNumber)}</Text>
                     </View>
                     <TouchableOpacity
@@ -107,7 +113,7 @@ const AvailableRequestsCards = () => {
                     <FlatList
                         data={availableRequests}
                         renderItem={renderRequestCard}
-                        key={rides.length}
+                        key={availableRequests.length}
                         keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={true}

@@ -60,25 +60,24 @@ const EditProfileScreen = ({ navigation }) => {
     const handleUpdate = async () => {
         try {
             ToastAndroid.show("Updating profile...", ToastAndroid.LONG);
-            console.log("Uploading image...");
-            console.log("photoURL:", photoURL);
-
+            // console.log("Uploading image...");
+            // console.log("photoURL:", photoURL);
             const response = await fetch(photoURL);
             const blob = await response.blob();
-            console.log("blob:", blob._data.name);
+            // console.log("blob:", blob._data.name);
 
             const metadata = {
                 contentType: "image/jpg",
             };
             const snapshot = await uploadBytes(ref(storage, `ProfileImages/${user.uid}.jpg`), blob, metadata);
-            console.log("Uploaded a blob or file!");
+            // console.log("Uploaded a blob or file!");
 
             const url = await getDownloadURL(snapshot.ref);
             setPhotoURL(url);
-            console.log("Image URL:", url);
+            // console.log("Image URL:", url);
         } catch (error) {
             showError("Error updating profile!", "Please try again later.");
-            console.log("Error updating profile picture: ", error);
+            ToastAndroid.show("Error uploading image!", ToastAndroid.SHORT);
         }
 
         dispatch(setUser({ firstName: firstName, lastName: lastName, email: email, photoURL: photoURL }));
@@ -95,8 +94,6 @@ const EditProfileScreen = ({ navigation }) => {
             quality: 1,
             allowsMultipleSelection: false,
         });
-        console.log(result);
-
         if (!result.canceled) {
             setPhotoURL(result.assets[0].uri);
         } else {
@@ -109,11 +106,10 @@ const EditProfileScreen = ({ navigation }) => {
             <SafeAreaView style={styles.container}>
                 <View style={styles.content}>
                     <TouchableOpacity onPress={pickImage}>
-                        {photoURL ? (
-                            <Image source={{ uri: photoURL }} style={styles.profileImage} />
-                        ) : (
-                            <Image source={{ uri: DEFAULT_PROFILE_IMAGE }} style={styles.profileImage} />
-                        )}
+                        <Image
+                            source={{ uri: photoURL ? photoURL : DEFAULT_PROFILE_IMAGE }}
+                            style={styles.profileImage}
+                        />
                     </TouchableOpacity>
                     <ClearableInput
                         label={"First Name"}
@@ -147,7 +143,7 @@ const EditProfileScreen = ({ navigation }) => {
                             title="Update"
                             buttonStyle={styles.button}
                             titleStyle={styles.buttonText}
-                            onPress={() => handleUpdate()}
+                            onPress={handleUpdate}
                             disabled={photoURL === "" || firstName === "" || lastName === "" || email === ""}
                         />
                     </View>

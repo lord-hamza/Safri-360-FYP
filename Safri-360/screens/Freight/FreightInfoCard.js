@@ -3,6 +3,7 @@ import { StyleSheet, View, TextInput } from "react-native";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useSelector, useDispatch } from "react-redux";
 import { ref, update, push, onValue } from "firebase/database";
+import { Skeleton } from "@rneui/themed";
 import moment from "moment";
 
 import { dbRealtime } from "../../firebase/config";
@@ -118,13 +119,14 @@ const FreightInfoCard = ({ navigation }) => {
                         status: "fetching",
                         createdAt: moment(Date.now()).format("LLLL"),
                     }),
+                    setWeight(""),
                 );
                 onValue(freightRef, (snapshot) => {
                     const freightData = snapshot.val();
                     for (const freightKey in freightData) {
                         const freight = freightData[freightKey];
                         if (freight.customerID === user.uid) {
-                            if (freight.status === "fetching") {
+                            if (freight.status === "accepted") {
                                 navigation.navigate("FreightRequestCard");
                             }
                         }
@@ -138,43 +140,49 @@ const FreightInfoCard = ({ navigation }) => {
 
     return (
         <BottomSheetView style={styles.container}>
-            <View style={styles.inputsContainer}>
-                <PlacesAutocomplete
-                    placeholder={"Pickup Location"}
-                    onPlaceSelected={(details, data) => {
-                        onPlaceSelected(details, data, "origin");
-                    }}
-                    currentLocation={true}
-                    currentLocationLabel={"Current Location"}
-                />
-                <PlacesAutocomplete
-                    placeholder={"Destination Location"}
-                    onPlaceSelected={(details, data) => {
-                        onPlaceSelected(details, data, "destination");
-                    }}
-                />
-                <VehiclePicker selectedVehicle={freight.vehicle} />
-                <View style={styles.weightInputContainer}>
-                    <TextInput
-                        placeholder="Weight (kg)"
-                        style={[styles.textInput, { marginRight: 5 }]}
-                        value={weight.toString()}
-                        onChangeText={(text) => {
-                            validateWeight(text);
-                        }}
-                        keyboardType="number-pad"
-                        maxLength={5}
-                    />
-                    <FreightFareCalculator weight={weight} />
+            {freight.status === "fetching" ? (
+                <View style={styles.loadingContainer}>
+                    <Skeleton animation="pulse" width="100%" height="50" skeletonStyle={styles.skeletonStyle} />
                 </View>
-                <PrimaryButton
-                    text="Request a Freight"
-                    action={fetchFreight}
-                    buttonStyle={styles.button}
-                    titleStyle={styles.buttonText}
-                    disabled={!((origin || destination) && weight && weight > 0)}
-                />
-            </View>
+            ) : (
+                <View style={styles.inputsContainer}>
+                    <PlacesAutocomplete
+                        placeholder={"Pickup Location"}
+                        onPlaceSelected={(details, data) => {
+                            onPlaceSelected(details, data, "origin");
+                        }}
+                        currentLocation={true}
+                        currentLocationLabel={"Current Location"}
+                    />
+                    <PlacesAutocomplete
+                        placeholder={"Destination Location"}
+                        onPlaceSelected={(details, data) => {
+                            onPlaceSelected(details, data, "destination");
+                        }}
+                    />
+                    <View style={styles.weightInputContainer}>
+                        <TextInput
+                            placeholder="Weight (kg)"
+                            style={[styles.textInput, { marginRight: 5 }]}
+                            value={weight.toString()}
+                            onChangeText={(text) => {
+                                validateWeight(text);
+                            }}
+                            keyboardType="number-pad"
+                            maxLength={5}
+                        />
+                        <FreightFareCalculator weight={weight} />
+                    </View>
+                    <VehiclePicker selectedVehicle={freight.vehicle} />
+                    <PrimaryButton
+                        text="Request a Freight"
+                        action={fetchFreight}
+                        buttonStyle={styles.button}
+                        titleStyle={styles.buttonText}
+                        disabled={!((origin || destination) && weight && weight > 0)}
+                    />
+                </View>
+            )}
         </BottomSheetView>
     );
 };
@@ -185,6 +193,14 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingHorizontal: 10,
         backgroundColor: "white",
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    skeletonStyle: {
+        height: 150,
     },
     inputsContainer: {
         flex: 1,

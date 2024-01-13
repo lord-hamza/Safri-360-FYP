@@ -31,7 +31,7 @@ const FreightBottomSheet = () => {
     });
 
     useEffect(() => {
-        if (freightRider.rideAssigned && freightRider.rideData.customerID) {
+        if (freightRider.rideAssigned && freightRider.rideData && freightRider.rideData.customerID) {
             const userRef = ref(dbRealtime, "Users/" + freightRider.rideData.customerID);
             onValue(userRef, (snapshot) => {
                 const userData = snapshot.val();
@@ -39,7 +39,7 @@ const FreightBottomSheet = () => {
                 setLoading(false);
             });
         }
-    }, [freightRider.rideAssigned]);
+    }, [freightRider.rideAssigned, freightRider.rideData]);
 
     const arrivedButton = () => {
         const rideRef = ref(dbRealtime, "FreightRequests/" + freightRider.rideData.id);

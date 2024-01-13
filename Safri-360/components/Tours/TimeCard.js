@@ -17,11 +17,11 @@ const TimeCard = () => {
     return (
         <Card containerStyle={styles.card}>
             <Text style={styles.cardTitle}>
-                Departure Time: {tour.departure || ""} {moment(tour.startDate).format("LL") || ""}
+                Departure Time: {tour.departure || ""} {moment(tour.startDate, "LL").format("LL") || ""}
             </Text>
             <Card.Divider style={styles.divider} />
             <Text style={styles.cardTitle}>
-                Reach By: {getReachByTime(tour.departure) || ""} {moment(tour.startDate).format("LL") || ""}
+                Reach By: {getReachByTime(tour.departure) || ""} {moment(tour.startDate, "LL").format("LL") || ""}
             </Text>
         </Card>
     );

@@ -223,7 +223,7 @@ const HomeScreen = ({ navigation }) => {
         remove(refPath)
             .then(() => {
                 setShowDirection(false);
-                dispatch(resetAction());
+                dispatch(resetAction);
                 dispatch(setOrigin(null));
                 dispatch(setDestination(null));
                 dispatch(setTravelRouteInformation(null));
@@ -235,11 +235,11 @@ const HomeScreen = ({ navigation }) => {
     };
 
     const handleRideBackPress = () => {
-        handleBackPressCommon("Rides/" + ride.id, resetRide);
+        handleBackPressCommon("Rides/" + ride.id, resetRide());
     };
 
     const handleFreightBackPress = () => {
-        handleBackPressCommon("FreightRequests/" + freight.id, resetFreight);
+        handleBackPressCommon("FreightRequests/" + freight.id, resetFreight());
     };
 
     const openDrawerMenu = () => {

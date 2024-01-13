@@ -73,6 +73,7 @@ const AddDriver = ({ navigation }) => {
             showError("Invalid Phone Number", "Please enter a valid phone number.");
             return false;
         }
+        return true;
     };
 
     const handleChangeText = (input) => {

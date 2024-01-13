@@ -44,6 +44,7 @@ const DriverInfoInputScreen = ({ navigation }) => {
             showError("Invalid CNIC", "Please enter a valid CNIC.");
             return false;
         }
+        return true;
     };
 
     const handleClear = () => {

@@ -15,10 +15,11 @@ import { selectUser } from "@store/slices/userSlice";
 import { dbRealtime } from "../../firebase/config";
 import { useMapContext } from "@contexts/MapContext";
 import DisplayStarRatings from "@components/Ride/DisplayStarRatings";
+import { resetFreight } from "@store/slices/freightSlice";
+import { setOrigin, setDestination, setTravelRouteInformation } from "@store/slices/navigationSlice";
 
-const FreightRequestCard = ({ navigation }) => {
+const FreightRequestCard = () => {
     const [loading, setLoading] = useState(true);
-    const [modalVisible, setModalVisible] = useState(false);
     const [freightRider, setFreightRider] = useState(null);
     const [rating, setRating] = useState(0);
 
@@ -70,8 +71,10 @@ const FreightRequestCard = ({ navigation }) => {
             },
         })
             .then(() => {
-                navigation.navigate("Home");
-                setModalVisible(false);
+                dispatch(resetFreight());
+                dispatch(setOrigin(null));
+                dispatch(setDestination(null));
+                dispatch(setTravelRouteInformation(null));
             })
             .catch((error) => {
                 console.log(error);
@@ -88,7 +91,8 @@ const FreightRequestCard = ({ navigation }) => {
                 <View style={styles.loadingContainer}>
                     <Skeleton animation="pulse" width="100%" height="50" skeletonStyle={styles.skeletonStyle} />
                 </View>
-            ) : (freightRider.status === "accepted" || freightRider.status === "ongoing") &&
+            ) : freightRider &&
+              (freightRider.status === "accepted" || freightRider.status === "ongoing") &&
               showDirection &&
               !loading ? (
                 <View style={styles.container}>
@@ -128,12 +132,12 @@ const FreightRequestCard = ({ navigation }) => {
                         <Text style={styles.infoText}>{freight.vehicle}</Text>
                     </View>
                 </View>
-            ) : freightRider.status === "completed" && !loading ? (
+            ) : freightRider && freightRider.status === "completed" && !loading ? (
                 <></>
             ) : (
-                freightRider.status === "cancelled" && <></>
+                freightRider && freightRider.status === "cancelled" && <></>
             )}
-            <Modal isVisible={freightRider.status === "completed"}>
+            <Modal isVisible={freightRider && freightRider.status === "completed"}>
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalHeader}>Ride Completed!</Text>
                     <Text style={styles.modalText}>Please rate the driver</Text>

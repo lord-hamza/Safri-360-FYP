@@ -47,6 +47,7 @@ const DriverLoginScreen = ({ navigation }) => {
             showError("Invalid phone number!", "Please try again.");
             return false;
         }
+        return true;
     };
 
     const handleClear = () => {
